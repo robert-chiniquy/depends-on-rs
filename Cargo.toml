@@ -1,0 +1,21 @@
+[package]
+name = "depends-on-rs"
+version = "0.1.0"
+description = "Declarative process orchestration for integration tests"
+edition = "2024"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/robert-chiniquy/depends-on-rs"
+homepage = "https://github.com/robert-chiniquy/depends-on-rs"
+keywords = ["testing", "integration", "process", "orchestration", "dag"]
+categories = ["development-tools::testing", "command-line-utilities"]
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+humantime = "2"
+libc = "0.2"
+os_pipe = "1"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
