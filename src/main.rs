@@ -1,4 +1,9 @@
 use std::process::ExitCode;
+use std::sync::{
+    Arc,
+    atomic::{AtomicBool, Ordering},
+};
+use std::time::Duration;
 
 use clap::{Parser, Subcommand};
 use depends_on_rs::Manager;
@@ -43,8 +48,17 @@ fn run() -> anyhow::Result<i32> {
     match cli.command {
         Command::Start { config, targets } => {
             let manager = Manager::load(config)?;
-            let _handle = manager.start(&targets)?;
-            std::thread::park();
+            let handle = manager.start(&targets)?;
+            let running = Arc::new(AtomicBool::new(true));
+            let signal_flag = Arc::clone(&running);
+            ctrlc::set_handler(move || {
+                signal_flag.store(false, Ordering::SeqCst);
+            })?;
+
+            while running.load(Ordering::SeqCst) {
+                std::thread::sleep(Duration::from_millis(100));
+            }
+            drop(handle);
             Ok(0)
         }
         Command::Run {

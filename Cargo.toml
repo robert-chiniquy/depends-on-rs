@@ -13,6 +13,7 @@ categories = ["development-tools::testing", "command-line-utilities"]
 [dependencies]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
+ctrlc = "3"
 humantime = "2"
 libc = "0.2"
 os_pipe = "1"
